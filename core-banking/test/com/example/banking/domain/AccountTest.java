@@ -21,5 +21,33 @@ class AccountTest {
 		assertEquals(balance, account.getBalance());
 		// 4. Destroy fixture
 	}
+	
+	@DisplayName("deposit with negative amount should fail")
+	@Test
+	void depositWithNegativeAmountShouldFail() throws Exception {
+		var account = new Account("TR1", 10_000);
+		var result = account.deposit(-1.0);
+		assertFalse(result);
+		assertEquals(10_000, account.getBalance());
+	}
 
+	@DisplayName("deposit with zero amount should fail")
+	@Test
+	void depositWithZeroAmountShouldFail() throws Exception {
+		var account = new Account("TR1", 10_000);
+		var result = account.deposit(0.0);
+		assertFalse(result);
+		assertEquals(10_000, account.getBalance());
+	}
+	
+	@DisplayName("deposit with positive amount should succeed")
+	@Test
+	void depositWithPositiveAmountShouldSucceed()  {
+		var account = new Account("TR1", 10_000);
+		var result = account.deposit(1.0);
+		assertTrue(result);
+		assertEquals(10_001, account.getBalance());
+	}
+	
+	
 }
