@@ -3,7 +3,9 @@ package com.example.banking.domain;
 // Entity Class -> identity -> iban
 public class Account {
 	// field/attribute/state/data
+	// instance+reference variable 
 	private final String iban;
+	// instance+value-typed variable 
 	private double balance;
 
 	// constructor
