@@ -1,0 +1,43 @@
+package com.example.banking.domain;
+
+// Entity Class -> identity -> iban
+public class Account {
+	// field/attribute/state/data
+	private final String iban;
+	private double balance;
+
+	// constructor
+	// Alt + Shift + S
+	public Account(String iban, double balance) {
+		this.iban = iban;
+		this.balance = balance;
+	}
+
+	public String getIban() {
+		return iban;
+	}
+
+	public double getBalance() {
+		return balance;
+	}
+	
+	// business method!
+	public boolean deposit(double amount) {
+		// validation
+		if (amount<=0) return false;
+		// business logic
+		this.balance = this.balance + amount;
+		return true;
+	}
+	
+	public boolean withdraw(double amount) {
+		// validation
+		if (amount<=0) return false;
+		// business rule
+		if (amount > balance) return false;
+		// business logic
+		this.balance = this.balance - amount;
+		return true;
+	}
+
+}
