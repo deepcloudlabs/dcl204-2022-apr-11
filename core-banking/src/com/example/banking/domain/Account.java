@@ -1,7 +1,7 @@
 package com.example.banking.domain;
 
 // Entity Class -> identity -> iban
-public class Account {
+public class Account extends Object {
 	// field/attribute/state/data
 	// instance+reference variable 
 	private final String iban;
@@ -40,6 +40,11 @@ public class Account {
 		// business logic
 		this.balance = this.balance - amount;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Account [iban=" + iban + ", balance=" + balance + "]";
 	}
 
 }

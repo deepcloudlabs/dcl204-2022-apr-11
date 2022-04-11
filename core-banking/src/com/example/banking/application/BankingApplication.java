@@ -14,6 +14,7 @@ public class BankingApplication {
 		   acc.deposit(5_000);
 		   acc.withdraw(2_500);
 		   System.out.println(acc.getBalance());
+		   System.out.println(acc.toString());
 		} // account is destroyed!
 	}
 }
