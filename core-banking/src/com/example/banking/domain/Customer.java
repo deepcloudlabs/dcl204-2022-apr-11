@@ -3,6 +3,7 @@ package com.example.banking.domain;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 public class Customer {
 	private final String identity;
@@ -31,9 +32,44 @@ public class Customer {
 	}
 	
 	// business methods: 
-	// addAccount(Account) 
-	// getAccount(int)
-	// getAccount(iban)
-	// removeAccount(iban)
-	// getTotalBalance() -> double
+	public boolean addAccount(Account account) {
+		// validation
+		for (Account acc : accounts) {
+			if (acc.getIban().equals(account.getIban()))
+				return false;
+		}
+		// business logic -> delegation
+		accounts.add(account);
+		return true;
+	} 
+	
+	public Optional<Account> getAccount(int index) {
+		if (index < 0 || index >= accounts.size())
+			return Optional.empty();
+		return Optional.of(accounts.get(index));
+	}
+	
+	public Optional<Account> getAccount(String iban) {
+		for (Account account : accounts) {
+			if (account.getIban().equals(iban))
+				return Optional.of(account);
+		}
+		return Optional.empty();
+	}
+	
+	public Optional<Account> removeAccount(String iban) {
+		var existingAccount = getAccount(iban);
+		if (existingAccount.isEmpty())
+			return Optional.empty();
+		accounts.remove(existingAccount.get());
+		return existingAccount;
+	}
+	
+	public double getTotalBalance() {
+		var totalBalance = 0.0;
+		for (var account : accounts) {
+			totalBalance += account.getBalance();
+		}
+		return totalBalance;
+	}
 }
