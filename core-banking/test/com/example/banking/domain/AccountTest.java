@@ -17,8 +17,10 @@ class AccountTest {
 		// 2. call exercise method
 		var account = new Account(iban, balance);
 		// 3. verification
-		assertEquals(iban, account.getIban());
-		assertEquals(balance, account.getBalance());
+		assertAll(
+			() -> assertEquals(iban, account.getIban()),
+			() -> assertEquals(balance, account.getBalance())
+		);
 		// 4. Destroy fixture
 	}
 	
@@ -27,8 +29,10 @@ class AccountTest {
 	void depositWithNegativeAmountShouldFail() throws Exception {
 		var account = new Account("TR1", 10_000);
 		var result = account.deposit(-1.0);
-		assertFalse(result);
-		assertEquals(10_000, account.getBalance());
+		assertAll(
+		   () -> assertFalse(result),
+		   () -> assertEquals(10_000, account.getBalance())
+		);
 	}
 
 	@DisplayName("deposit with zero amount should fail")
@@ -36,8 +40,10 @@ class AccountTest {
 	void depositWithZeroAmountShouldFail() throws Exception {
 		var account = new Account("TR1", 10_000);
 		var result = account.deposit(0.0);
-		assertFalse(result);
-		assertEquals(10_000, account.getBalance());
+		assertAll(
+			() -> assertFalse(result),
+			() -> assertEquals(10_000, account.getBalance())
+		);
 	}
 	
 	@DisplayName("deposit with positive amount should succeed")
@@ -45,9 +51,44 @@ class AccountTest {
 	void depositWithPositiveAmountShouldSucceed()  {
 		var account = new Account("TR1", 10_000);
 		var result = account.deposit(1.0);
-		assertTrue(result);
-		assertEquals(10_001, account.getBalance());
+		assertAll(
+			 () -> assertTrue(result),
+			 () -> assertEquals(10_001, account.getBalance())
+		);
 	}
 	
+	@DisplayName("Withdrawing zero or negative amount should fail")
+	@ParameterizedTest
+	@CsvFileSource(resources = "withdraw-fail.csv")
+	void withdrawShouldFail(String iban, double balance,double amount) {
+		var account = new Account(iban, balance);
+		assertAll(
+		 () -> assertFalse(account.withdraw(amount)),
+		 () -> assertEquals(balance, account.getBalance())
+		);
+	}
+
+	@DisplayName("Withdrawing all balance should succeed")
+	@Test
+	void withdrawAllBalanceShouldSucceed() {
+		// 1. fixture/test setup
+		var account = new Account("TR1", 10_000);
+		// 2. call exercise method
+		assertAll(
+			() -> assertTrue(account.withdraw(10_000)),
+			() -> assertEquals(0.0, account.getBalance())
+		);
+	}
 	
+	@DisplayName("toString should contain iban and balance")
+	@Test
+	void toStringShouldSucceed() throws Exception {
+		var account = new Account("TR1", 10_000);
+		assertAll(
+			() -> assertTrue(account.toString().startsWith("Account")),
+			() -> assertTrue(account.toString().contains("iban=")),
+			() -> assertTrue(account.toString().contains("balance="))
+		);
+		
+	}
 }
