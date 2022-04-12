@@ -16,13 +16,23 @@ public class StudyPolymorphism {
 			acc=new CheckingAccount("tr2", 200_000, 1_000);
 		System.out.println(acc.getClass().getName());
 		acc.withdraw(500); // ?		
+		H h = new I();
+		System.out.println(h.getX());
 	}
 
 }
 
-class H {}
-class I extends H {}
-class J extends H {}
+abstract class H {
+	public abstract int getX(); 
+}
+class I extends H {
+	public int x;
+	public int getX() {return x;}
+}
+class J extends H {
+	public int x;
+	public int getX() {return x;}
+}
 class K extends J {}
 class M {}
 class N extends I {}
