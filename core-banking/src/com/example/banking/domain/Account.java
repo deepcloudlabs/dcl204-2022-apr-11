@@ -1,12 +1,15 @@
 package com.example.banking.domain;
-
+// OOP: 
+//   i) Class/Object -> Encapsulation( hide the state + behaviour ) + Information Hiding 
+//  ii) Inheritance  -> Re-usability
+// iii) Polymorphism -> Agility
 // Entity Class -> identity -> iban
 public class Account extends Object {
 	// field/attribute/state/data
 	// instance+reference variable 
 	private final String iban;
 	// instance+value-typed variable 
-	private double balance;
+	protected double balance; // zero + positive
 
 	// constructor
 	// Alt + Shift + S
@@ -33,6 +36,7 @@ public class Account extends Object {
 	}
 	
 	public boolean withdraw(double amount) {
+		System.out.println("Account::withdraw");
 		// validation
 		if (amount<=0) return false;
 		// business rule

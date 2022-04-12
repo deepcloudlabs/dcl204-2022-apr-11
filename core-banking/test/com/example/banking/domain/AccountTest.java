@@ -1,9 +1,13 @@
 package com.example.banking.domain;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.DynamicContainer.*;
+import static org.junit.jupiter.api.DynamicTest.*;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.DynamicNode;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestFactory;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 
@@ -90,5 +94,11 @@ class AccountTest {
 			() -> assertTrue(account.toString().contains("balance="))
 		);
 		
+	}
+	
+	@Test
+	void testName() throws Exception {
+		var x = (0.1 + 0.2) + 0.3;
+		assertEquals(0.6, x, 0.001);
 	}
 }

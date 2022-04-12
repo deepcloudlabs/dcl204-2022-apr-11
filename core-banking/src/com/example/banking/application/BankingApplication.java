@@ -13,7 +13,7 @@ public class BankingApplication {
 		   acc = new Account("TR1", 10_000); // Heap Object
 		   acc.deposit(5_000);
 		   acc.withdraw(2_500);
-		   System.out.println(acc.getBalance());
+		   acc.withdraw(1_000_000);
 		   System.out.println(acc.toString());
 		} // account is destroyed!
 	}
