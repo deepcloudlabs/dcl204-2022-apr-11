@@ -57,6 +57,12 @@ public class Customer {
 		return Optional.empty();
 	}
 	
+	public Optional<Account> getAccountFunctional(String iban) {
+		return accounts.stream()
+				       .filter(acc -> acc.getIban().equals(iban))
+		               .findFirst();
+	}
+	
 	public Optional<Account> removeAccount(String iban) {
 		var existingAccount = getAccount(iban);
 		if (existingAccount.isEmpty())
@@ -71,5 +77,9 @@ public class Customer {
 			totalBalance += account.getBalance();
 		}
 		return totalBalance;
+	}
+	
+	public double getTotalBalanceFunctional() {
+		return accounts.stream().mapToDouble(Account::getBalance).sum();
 	}
 }

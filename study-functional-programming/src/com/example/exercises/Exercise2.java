@@ -9,6 +9,7 @@ import java.util.function.Predicate;
 *
 *  @author Binnur Kurt <binnur.kurt@gmail.com>
 */
+@SuppressWarnings("unused")
 public class Exercise2 {
 
 	public static void main(String[] args) {
