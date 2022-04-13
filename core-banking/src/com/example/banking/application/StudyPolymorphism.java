@@ -1,6 +1,5 @@
 package com.example.banking.application;
 
-import java.math.BigInteger;
 import java.util.concurrent.ThreadLocalRandom;
 
 import com.example.banking.domain.Account;
