@@ -10,12 +10,26 @@ public class Account extends Object {
 	private final String iban;
 	// instance+value-typed variable 
 	protected double balance; // zero + positive
-
+	private AccountStatus status; // 0: ACTIVE, 1: CLOSED, 2: BLOCKED
+	private static int numberOfAccounts = 0;
 	// constructor
 	// Alt + Shift + S
 	public Account(String iban, double balance) {
 		this.iban = iban;
 		this.balance = balance;
+		numberOfAccounts++;
+	}
+
+	public static int getNumberOfAccounts() {
+		return numberOfAccounts;
+	}
+
+	public AccountStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(AccountStatus status) {
+		this.status = status;
 	}
 
 	public String getIban() {
@@ -26,24 +40,29 @@ public class Account extends Object {
 		return balance;
 	}
 	
+	// Exception:
+	// 1) Unchecked - Runtime Exception  - RuntimeException -> Bug?
+	// 2) Checked   - Business Exception - Exception
+	// 3) Error     - Fatal Error        - Error 
 	// business method!
-	public boolean deposit(double amount) {
+	public double deposit(double amount)  {
 		// validation
-		if (amount<=0) return false;
+		if (amount<=0) throw new IllegalArgumentException("deposit amount must be positive.");
 		// business logic
 		this.balance = this.balance + amount;
-		return true;
+		return this.balance;
 	}
 	
-	public boolean withdraw(double amount) {
+	public double withdraw(double amount) throws InsufficientBalanceException {
 		System.out.println("Account::withdraw");
 		// validation
-		if (amount<=0) return false;
+		if (amount<=0) throw new IllegalArgumentException("withdraw amount must be positive.");
 		// business rule
-		if (amount > balance) return false;
+		if (amount > balance) throw new InsufficientBalanceException(
+				"Your balance does not cover your expenses", amount-balance); 
 		// business logic
 		this.balance = this.balance - amount;
-		return true;
+		return balance;
 	}
 
 	@Override

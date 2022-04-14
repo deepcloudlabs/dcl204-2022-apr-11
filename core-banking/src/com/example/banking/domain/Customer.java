@@ -49,6 +49,12 @@ public class Customer {
 		return Optional.of(accounts.get(index));
 	}
 	
+	public Account findAccount(int index) {
+		if (index < 0 || index >= accounts.size())
+			throw new IndexOutOfBoundsException("Cannot find the account");
+		return accounts.get(index);
+	}
+	
 	public Optional<Account> getAccount(String iban) {
 		for (Account account : accounts) {
 			if (account.getIban().equals(iban))
