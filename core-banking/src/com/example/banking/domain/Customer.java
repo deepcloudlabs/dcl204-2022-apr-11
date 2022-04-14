@@ -3,6 +3,7 @@ package com.example.banking.domain;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 public class Customer {
@@ -30,8 +31,8 @@ public class Customer {
 	public List<Account> getAccounts() {
 		return Collections.unmodifiableList(accounts);
 	}
-	
-	// business methods: 
+
+	// business methods:
 	public boolean addAccount(Account account) {
 		// validation
 		for (Account acc : accounts) {
@@ -41,20 +42,20 @@ public class Customer {
 		// business logic -> delegation
 		accounts.add(account);
 		return true;
-	} 
-	
+	}
+
 	public Optional<Account> getAccount(int index) {
 		if (index < 0 || index >= accounts.size())
 			return Optional.empty();
 		return Optional.of(accounts.get(index));
 	}
-	
+
 	public Account findAccount(int index) {
 		if (index < 0 || index >= accounts.size())
 			throw new IndexOutOfBoundsException("Cannot find the account");
 		return accounts.get(index);
 	}
-	
+
 	public Optional<Account> getAccount(String iban) {
 		for (Account account : accounts) {
 			if (account.getIban().equals(iban))
@@ -62,13 +63,11 @@ public class Customer {
 		}
 		return Optional.empty();
 	}
-	
+
 	public Optional<Account> getAccountFunctional(String iban) {
-		return accounts.stream()
-				       .filter(acc -> acc.getIban().equals(iban))
-		               .findFirst();
+		return accounts.stream().filter(acc -> acc.getIban().equals(iban)).findFirst();
 	}
-	
+
 	public Optional<Account> removeAccount(String iban) {
 		var existingAccount = getAccount(iban);
 		if (existingAccount.isEmpty())
@@ -76,7 +75,7 @@ public class Customer {
 		accounts.remove(existingAccount.get());
 		return existingAccount;
 	}
-	
+
 	public double getTotalBalance() {
 		var totalBalance = 0.0;
 		for (var account : accounts) {
@@ -84,8 +83,26 @@ public class Customer {
 		}
 		return totalBalance;
 	}
-	
+
 	public double getTotalBalanceFunctional() {
 		return accounts.stream().mapToDouble(Account::getBalance).sum();
 	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(identity);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Customer other = (Customer) obj;
+		return Objects.equals(identity, other.identity);
+	}
+
 }
