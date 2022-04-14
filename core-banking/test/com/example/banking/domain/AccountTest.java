@@ -2,7 +2,7 @@ package com.example.banking.domain;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.DisplayName;
@@ -31,9 +31,8 @@ class AccountTest {
 	@Test
 	void depositWithNegativeAmountShouldFail() throws Exception {
 		var account = new Account("TR1", 10_000);
-		var result = account.deposit(-1.0);
 		assertAll(
-		   () -> assertFalse(result),
+		   () -> assertThrows(IllegalArgumentException.class, () -> account.deposit(-1.0)),
 		   () -> assertEquals(10_000, account.getBalance())
 		);
 	}
@@ -42,9 +41,8 @@ class AccountTest {
 	@Test
 	void depositWithZeroAmountShouldFail() throws Exception {
 		var account = new Account("TR1", 10_000);
-		var result = account.deposit(0.0);
 		assertAll(
-			() -> assertFalse(result),
+			() -> assertThrows(IllegalArgumentException.class, () -> account.deposit(0.0)),
 			() -> assertEquals(10_000, account.getBalance())
 		);
 	}
@@ -53,11 +51,7 @@ class AccountTest {
 	@Test
 	void depositWithPositiveAmountShouldSucceed()  {
 		var account = new Account("TR1", 10_000);
-		var result = account.deposit(1.0);
-		assertAll(
-			 () -> assertTrue(result),
-			 () -> assertEquals(10_001, account.getBalance())
-		);
+		assertEquals(10_001, account.deposit(1.0));
 	}
 	
 	@DisplayName("Withdrawing zero or negative amount should fail")
@@ -66,21 +60,18 @@ class AccountTest {
 	void withdrawShouldFail(String iban, double balance,double amount) {
 		var account = new Account(iban, balance);
 		assertAll(
-		 () -> assertFalse(account.withdraw(amount)),
+		 () -> assertThrows(Exception.class, () -> account.withdraw(amount)),
 		 () -> assertEquals(balance, account.getBalance())
 		);
 	}
 
 	@DisplayName("Withdrawing all balance should succeed")
 	@Test
-	void withdrawAllBalanceShouldSucceed() {
+	void withdrawAllBalanceShouldSucceed() throws Throwable {
 		// 1. fixture/test setup
 		var account = new Account("TR1", 10_000);
 		// 2. call exercise method
-		assertAll(
-			() -> assertTrue(account.withdraw(10_000)),
-			() -> assertEquals(0.0, account.getBalance())
-		);
+		assertEquals(0.0, account.withdraw(10_000));
 	}
 	
 	@DisplayName("toString should contain iban and balance")

@@ -4,17 +4,18 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import com.example.banking.domain.Account;
 import com.example.banking.domain.CheckingAccount;
+import com.example.banking.domain.InsufficientBalanceException;
 
 public class StudyPolymorphism {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InsufficientBalanceException {
 		Account acc;
 		if (ThreadLocalRandom.current().nextBoolean())
 			acc=new Account("tr1", 100_000);
 		else
 			acc=new CheckingAccount("tr2", 200_000, 1_000);
 		System.out.println(acc.getClass().getName());
-		acc.withdraw(500); // ?		
+		acc.withdraw(500);
 		H h = new I();
 		System.out.println(h.getX());
 	}
