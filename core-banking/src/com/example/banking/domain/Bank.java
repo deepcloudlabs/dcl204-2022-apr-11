@@ -2,16 +2,18 @@ package com.example.banking.domain;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
  *
  * @author Binnur Kurt <binnur.kurt@gmail.com>
  */
-public class Bank {
+public final class Bank {
 	private final int id;
-	private String name;
+	private final String name;
 	private final Map<String, Customer> customers = new HashMap<>();
 
 	public Bank(int id, String name) {
@@ -21,10 +23,6 @@ public class Bank {
 
 	public String getName() {
 		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public int getId() {
@@ -40,20 +38,36 @@ public class Bank {
 	}
 
 	public void addCustomer(Customer customer) {
-		if (true) {
+		var identity = customer.getIdentity();
+		if (Objects.nonNull(customers.get(identity))) {
 			throw new IllegalArgumentException("Customer already exists.");
 		}
+		customers.put(identity, customer);
 	}
 
 	public Optional<Account> getAccount(String iban) {
-		return null;
+		return customers.values()
+				        .stream()
+				        .map(customer -> customer.getAccount(iban))
+				        .filter(Optional::isPresent)
+				        .map(Optional::get)
+				        .findFirst();
 	}
 
 	public double getTotalBalance() {
-		return 0.0;
+		return customers.values()
+				        .stream()
+				        .mapToDouble(Customer::getTotalBalance)
+				        .sum();
 	}
-	
+
 	public double getTotalBalance(Class<? extends Account> clazz) {
-		return 0.0;
+		return customers.values()
+				.stream()
+				.map(Customer::getAccounts)
+				.flatMap(List::stream)
+				.filter(account -> account.getClass().equals(clazz))
+				.mapToDouble(Account::getBalance)
+				.sum();
 	}
 }

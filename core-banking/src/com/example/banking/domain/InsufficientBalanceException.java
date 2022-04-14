@@ -4,6 +4,7 @@ package com.example.banking.domain;
  *
  * @author Binnur Kurt <binnur.kurt@gmail.com>
  */
+@SuppressWarnings("serial")
 public class InsufficientBalanceException extends Exception {
 
 	private final double deficit;
