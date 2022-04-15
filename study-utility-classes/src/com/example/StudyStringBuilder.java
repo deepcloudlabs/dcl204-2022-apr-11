@@ -7,7 +7,10 @@ package com.example;
 public class StudyStringBuilder {
 
 	public static void main(String[] args) {
-		StringBuffer s = new StringBuffer(12888890);
+		// StringBuffer -> Thread-Safe
+//		StringBuffer s = new StringBuffer(12888890);
+		StringBuilder s = new StringBuilder(12888890);
+		
 		var start = System.currentTimeMillis();
 		for (var i=0;i<2_000_000;++i)
 			s.append(Integer.toString(i)); 
